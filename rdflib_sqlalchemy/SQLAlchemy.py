@@ -163,7 +163,8 @@ def unionSELECT(selectComponents, distinct=False, selectType=TRIPLE_SELECT):
             selectClause = table.select(whereClause)
         elif tableType == ASSERTED_TYPE_PARTITION:
             selectClause = expression.select(
-                [table.c.member.label('subject'),
+                [table.c.id.label('id'),
+                 table.c.member.label('subject'),
                  expression.literal(str(RDF.type) if PY3 else unicode(RDF.type)).label('predicate'),
                  table.c.klass.label('object'),
                  table.c.context.label('context'),
@@ -199,12 +200,12 @@ def extractTriple(tupleRt, store, hardCodedContext=None):
     to interpret how to instantiate each term
     """
     try:
-        subject, predicate, obj, rtContext, termComb, \
+        id, subject, predicate, obj, rtContext, termComb, \
             objLanguage, objDatatype = tupleRt
         termCombString = REVERSE_TERM_COMBINATIONS[termComb]
         subjTerm, predTerm, objTerm, ctxTerm = termCombString
     except ValueError:
-        subject, subjTerm, predicate, predTerm, obj, objTerm, \
+        id, subject, subjTerm, predicate, predTerm, obj, objTerm, \
             rtContext, ctxTerm, objLanguage, objDatatype = tupleRt
     context = rtContext is not None \
         and rtContext \
@@ -214,7 +215,7 @@ def extractTriple(tupleRt, store, hardCodedContext=None):
     o = createTerm(obj, objTerm, store, objLanguage, objDatatype)
 
     graphKlass, idKlass = constructGraph(ctxTerm)
-    return s, p, o, (graphKlass, idKlass, context)
+    return id, s, p, o, (graphKlass, idKlass, context)
 
 
 def createTerm(
@@ -864,7 +865,7 @@ class SQLAlchemy(Store, SQLGenerator):
             result = res.fetchall()
         tripleCoverage = {}
         for rt in result:
-            s, p, o, (graphKlass, idKlass, graphId) = \
+            id, s, p, o, (graphKlass, idKlass, graphId) = \
                 extractTriple(rt, self, context)
             contexts = tripleCoverage.get((s, p, o), [])
             contexts.append(graphKlass(self, idKlass(graphId)))
