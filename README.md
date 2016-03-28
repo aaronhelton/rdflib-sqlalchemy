@@ -36,7 +36,7 @@ Development
 ===========
 Github repository: https://github.com/RDFLib/rdflib-sqlalchemy
 
-Travis-CI build status: [![Build Status](https://travis-ci.org/RDFLib/rdflib-sqlalchemy.png?branch=master)](https://travis-ci.org/RDFLib/rdflib-sqlalchemy)
+Travis-CI build status: [![Build Status](https://travis-ci.org/aaronhelton/rdflib-sqlalchemy.png?branch=master)](https://travis-ci.org/aaronhelton/rdflib-sqlalchemy)
 
 An illustrative unit test:
 ==========================
