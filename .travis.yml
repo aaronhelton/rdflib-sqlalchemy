@@ -1,4 +1,4 @@
-# http://travis-ci.org/#!/gjhiggins/rdflib-sqlalchemy
+# http://travis-ci.org/#!/aaronhelton/rdflib-sqlalchemy
 language: python
 branches:
   only:
